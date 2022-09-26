@@ -1,4 +1,4 @@
-let altura = 50;
+let altura = 100;
 let button;
 let a = 0;
 let b = 0;
@@ -8,6 +8,17 @@ maze[b][a] = "S";
 
 // INICIAR LABERINTO
 function iniciar() {
+    for (let i = 0; i < maze.length; i++) {
+        textSize(30);
+        text("|" + maze[i] + "|", 155, altura);
+        fill(0, 102, 153);
+        altura += 30;
+    }
+    altura = 100;
+    setTimeout(BG(),3000)
+    setTimeout((BG()) => {
+        
+    }, 3000);
     if (resol(maze, a, b) == true) {
         console.log("!Encontro el camino!");
         mostrar();
@@ -16,27 +27,35 @@ function iniciar() {
     }
 }
 
+function pasoapaso() {
+    
+}
+
 // CANVAS
 function setup() {
     createCanvas(500, 500);
+    BG();
     button = createButton('iniciar');
     button.position(10, 10);
-    button.mousePressed(iniciar());
-}
-function draw() {
-    background(220);
+    button.mousePressed(iniciar)
     for (let i = 0; i < maze.length; i++) {
         textSize(30);
-        text("|" + maze[i] + "|", 165, altura);
+        text("|" + maze[i] + "|", 155, altura);
         fill(0, 102, 153);
-        altura = altura*1.2
+        altura += 30;
     }
+    altura = 100;
+}
+
+// CREAR BG
+function BG() {
+    background(199);
 }
 
 // CREAR LABERINTO
 function crearLabe() {
     let mz = [
-        [".", ".", ".", ".", "."],
+        ["S", ".", ".", ".", "."],
         ["#", "#", "#", "#", "."],
         [".", ".", ".", ".", "."],
         [".", "#", ".", "#", "."],
