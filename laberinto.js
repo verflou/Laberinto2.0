@@ -1,3 +1,9 @@
+let img;
+let start;
+let pared;
+let tesoro;
+let volver;
+let ancho = 50;
 let altura = 100;
 let button;
 let a = 0;
@@ -8,43 +14,43 @@ maze[b][a] = "S";
 
 // INICIAR LABERINTO
 function iniciar() {
-    for (let i = 0; i < maze.length; i++) {
-        textSize(30);
-        text("|" + maze[i] + "|", 155, altura);
-        fill(0, 102, 153);
-        altura += 30;
+    for (let j = 0; j < maze.length; j++) {
+        for (let i = 0; i < maze.length; i++) {
+            if (maze[j][i] == "S" || maze[j][i] == "+") {
+                resol(maze, j, i);
+                image(start, ancho, altura, 50, 50);
+            } else if (maze[j][i] == ".") {
+                resol(maze, j, i);
+                image(img, ancho, altura, 50, 50);
+            } else if (maze[j][i] == "#") {
+                resol(maze, j, i);
+                image(pared, ancho, altura, 50, 50);
+            } else if (maze[j][i] == "G") {
+                resol(maze, j, i);
+                image(tesoro, ancho, altura, 50, 50);
+            } else if (maze[j][i] == "X") {
+                resol(maze, j, i);
+                image(volver, ancho, altura, 50, 50);
+            }
+            ancho += 50;
+        }
+        ancho = 50;
+        altura += 50;
     }
-    altura = 100;
-    setTimeout(BG(),3000)
-    setTimeout((BG()) => {
-        
-    }, 3000);
-    if (resol(maze, a, b) == true) {
-        console.log("!Encontro el camino!");
-        mostrar();
-    } else {
-        console.log("No encontro el camino...");
-    }
-}
-
-function pasoapaso() {
-    
 }
 
 // CANVAS
 function setup() {
     createCanvas(500, 500);
+    img = loadImage("/img/wall_right.png");
+    start = loadImage("/img/wall_banner_green.png");
+    pared = loadImage("/img/floor_spikes_anim_f3.png");
+    tesoro = loadImage("/img/chest_full_open_anim_f2.png");
+    volver = loadImage("/img/wall_banner_red.png");
     BG();
     button = createButton('iniciar');
     button.position(10, 10);
-    button.mousePressed(iniciar)
-    for (let i = 0; i < maze.length; i++) {
-        textSize(30);
-        text("|" + maze[i] + "|", 155, altura);
-        fill(0, 102, 153);
-        altura += 30;
-    }
-    altura = 100;
+    button.mousePressed(iniciar);
 }
 
 // CREAR BG
@@ -52,92 +58,58 @@ function BG() {
     background(199);
 }
 
-// CREAR LABERINTO
+// CREAR LABERINTOimage(start, ancho, altura, 50, 50);
 function crearLabe() {
-    let mz = [
+    let maze = [
         ["S", ".", ".", ".", "."],
         ["#", "#", "#", "#", "."],
         [".", ".", ".", ".", "."],
         [".", "#", ".", "#", "."],
         [".", "#", ".", "#", "G"],
     ];
-    return mz
-}
-
-
-//INTENTO CREAR LABERINTO ALEATORIO
-/*
-function MkRandMz() {
-    let mz = [
-        [".", ".", ".", ".", "."],
-        [".", ".", ".", ".", "."],
-        [".", ".", ".", ".", "."],
-        [".", ".", ".", ".", "."],
-        [".", ".", ".", ".", "."],
-    ];
-    mz[Math.floor(Math.random() * (5 - 3 + 1) ) + 3][
-        Math.floor(Math.random() * (5 - 3 + 1) ) + 3
-    ] = "G";
-    for (let i = 0; i < mz.length; i++) {
-        for (let j = 0; j < mz.length; j++) {
-            let nro = Math.floor(Math.random() * 4);
-            if (nro !== 3 && (i%2) !== 0) {
-                if (mz[i][j] !== "G") {
-                    mz[i][Math.floor(Math.random() * 5)] = "#";
-                }
-            }
-        }
-    }
-    return mz;
-}
-*/
-
-// MOSTRAR LABERINTO
-function mostrar() {
-    for (let i = 0; i < maze.length; i++) {
-        console.log(maze[i]);
-    }
+    return maze
 }
 
 // RESOLVER LABERINTO
-function resol(mz, x, y) {
-    if (x == -1 || y == -1 || x == mz.length || y == mz.length) {
+function resol(maze, x, y) {
+    if (x == -1 || y == -1 || x == maze.length || y == maze.length) {
         return false;
     }
-    if (mz[y][x] == "G") {
+    if (maze[y][x] == "G") {
         return true;
     }
-    if (mz[y][x] == "#") {
+    if (maze[y][x] == "#") {
         return false;
     }
-    if (mz[y][x] == "X") {
+    if (maze[y][x] == "X") {
         return false;
     }
-    if (mz[y][x] == "+") {
+    if (maze[y][x] == "+") {
         return false;
     }
-    if (mz[y][x] !== "S") {
-        mz[y][x] = "+";
+    if (maze[y][x] !== "S") {
+        maze[y][x] = "+";
     }
     //ESTE
-    if (resol(mz, x + 1, y) == true) {
+    if (resol(maze, x + 1, y) == true) {
         return true;
     }
     //NORTE
-    if (resol(mz, x, y - 1) == true) {
+    if (resol(maze, x, y - 1) == true) {
         return true;
     }
     //OESTE
-    if (resol(mz, x - 1, y) == true) {
+    if (resol(maze, x - 1, y) == true) {
         return true;
     }
     //SUR
-    if (resol(mz, x, y + 1) == true) {
+    if (resol(maze, x, y + 1) == true) {
         return true;
     }
 
-    if (mz[y][x] !== "S") {
-        mz[y][x] = "X";
+    if (maze[y][x] !== "S") {
+        maze[y][x] = "X";
     }
     return false;
+
 }
