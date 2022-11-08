@@ -2,32 +2,14 @@ let img;
 let start;
 let pared;
 let tesoro;
-let tesoro2;
 let volver;
-let ancho = 0;
-let altura = 70;
+let ancho = 50;
+let altura = 100;
 let button;
+let a = 0;
+let b = 0;
 let maze = crearLabe();
 maze[b][a] = "S";
-
-// CREAR LABERINTO(start, ancho, altura);
-function crearLabe() {
-    let maze = [
-        ["S", "#", ".", "#", ".", "#", ".", ".", "#", "."],
-        [".", ".", ".", "#", ".", ".", ".", "#", "#", "."],
-        [".", "#", ".", "#", ".", "#", ".", ".", "#", "."],
-        [".", "#", ".", ".", ".", "#", "#", ".", "#", "."],
-        [".", "#", ".", "#", ".", "#", ".", ".", ".", "."],
-        [".", "#", ".", "#", ".", "#", "#", ".", "#", "."],
-        [".", "#", ".", ".", ".", "#", "#", ".", "#", "."],
-        [".", "#", "#", "#", ".", "#", "#", ".", "#", "."],
-        [".", "#", ".", "#", ".", "#", "#", ".", "#", "."],
-        [".", "#", ".", ".", ".", "#", "#", ".", "#", "G"],
-    ];
-    return maze
-
-}
-
 
 
 // INICIAR LABERINTO
@@ -49,37 +31,43 @@ function iniciar() {
             } else if (maze[j][i] == "X") {
                 resol(maze, j, i);
                 image(volver, ancho, altura, 50, 50);
-
             }
-
             ancho += 50;
         }
-        ancho = 0;
+        ancho = 50;
         altura += 50;
     }
-    altura = 70;
-
 }
 
 // CANVAS
 function setup() {
-    createCanvas(800, 600);
+    createCanvas(500, 500);
     img = loadImage("/img/wall_right.png");
     start = loadImage("/img/wall_banner_green.png");
     pared = loadImage("/img/floor_spikes_anim_f3.png");
     tesoro = loadImage("/img/chest_full_open_anim_f2.png");
     volver = loadImage("/img/wall_banner_red.png");
     BG();
-    iniciar();
-    laberinto();
     button = createButton('iniciar');
-    button.position(350, 10);
+    button.position(10, 10);
     button.mousePressed(iniciar);
 }
 
 // CREAR BG
 function BG() {
-    background(69, 35,20);
+    background(199);
+}
+
+// CREAR LABERINTOimage(start, ancho, altura, 50, 50);
+function crearLabe() {
+    let maze = [
+        ["S", ".", ".", ".", "."],
+        ["#", "#", "#", "#", "."],
+        [".", ".", ".", ".", "."],
+        [".", "#", ".", "#", "."],
+        [".", "#", ".", "#", "G"],
+    ];
+    return maze
 }
 
 // RESOLVER LABERINTO
@@ -124,28 +112,4 @@ function resol(maze, x, y) {
     }
     return false;
 
-}
-
-function laberinto() {
-    for (let j = 0; j < maze.length; j++) {
-        for (let i = 0; i < maze.length; i++) {
-            if (maze[j][i] == "S" || maze[j][i] == "+") {
-                image(img, ancho, altura, 50, 50);
-            } else if (maze[j][i] == ".") {
-                image(img, ancho, altura, 50, 50);
-            } else if (maze[j][i] == "#") {
-                image(pared, ancho, altura, 50, 50);
-            } else if (maze[j][i] == "G") {
-                image(tesoro, ancho, altura, 50, 50);
-            } else if (maze[j][i] == "X") {
-                image(img, ancho, altura, 50, 50);
-
-            }
-
-            ancho += 50;
-        }
-        ancho = 0;
-        altura += 50;
-    }
-    altura = 70;
 }
